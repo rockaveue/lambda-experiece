@@ -25,6 +25,9 @@ Here is how I achieved that
 
 # Typeorm configuration
 
+<details>
+<summary>ormconfig.js</summary>
+
 ```js
 //ormconfig.js
 module.exports = {
@@ -45,6 +48,7 @@ module.exports = {
   },
 };
 ```
+</details>
 
 # Serverless installation
 
@@ -72,6 +76,9 @@ There is 2 way to configure, I did the latter
 # Create serverless.yml and handler
 
 ### serverless.yml
+<details>
+<summary>serverless.yml</summary>
+
 ```yml
 //serverless.yml
 service:
@@ -104,8 +111,14 @@ functions:
           path: /{any+}
           cors: true
 ```
+</details>
+
+
 
 ### handler
+<details>
+<summary> handler </summary>
+
 ```typescript
 //src/main.ts
 import { APIGatewayProxyEvent, APIGatewayProxyHandler } from 'aws-lambda';
@@ -147,35 +160,14 @@ export const handler: APIGatewayProxyHandler = async (
 };
 
 ```
-
-# Creating RDS instance
-
-## Configure security group
-
-# Typeorm migration
-
-Generate new migration from entity
-
-`npx typeorm migration:generate UserMigration`
-
-and run the migration
-
-`npx typeorm migration: run`
-
-# Deploy the project
-
-`sls deploy --stage dev`
-
---stage dev: is optional, it just configures that stage variable is dev
-
-# RDS secrets configuration on lambda
-
-# Trying the lambda function
-
+</details>
 
 # Login and register endpoint
 
 created login and register endpoint for testing purpose
+
+<details>
+<summary>User entity</summary>
 
 ```ts
 //user.entity.ts
@@ -209,6 +201,9 @@ export class Users {
   confirmToken: string;
 }
 ```
+</details>
+<details>
+<summary>Auth controller</summary>
 
 ```ts
 //auth.controller.ts
@@ -238,8 +233,12 @@ export class AuthController {
     return await this.authService.login(createAuthDto);
   }
 }
-
 ```
+
+</details>
+
+<details>
+<summary>Auth service</summary>
 
 ```ts
 //auth.service.ts
@@ -322,5 +321,33 @@ export class AuthService {
     return bcrypt.hash(password, ITERATIONS);
   }
 }
-
 ```
+</details>
+
+# Creating RDS instance
+
+## Configure security group
+
+# Typeorm migration
+
+Generate new migration from entity
+
+`npx typeorm migration:generate UserMigration`
+
+and to run the migration
+
+`npx typeorm migration: run`
+
+
+For me I did not call my migration from my lambda for various reasons.
+
+I simple just changed the database configuration and ran the migration from my local pc.
+# Deploy the project
+
+`sls deploy --stage dev`
+
+--stage dev: is optional, it just configures that stage variable is dev
+
+# RDS secrets configuration on lambda
+
+# Trying the lambda function
